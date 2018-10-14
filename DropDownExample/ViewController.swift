@@ -155,6 +155,8 @@ class dropDownView: UIView,UITableViewDelegate,UITableViewDataSource {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: "customCell")
+
         tableView.backgroundColor = UIColor.white
         self.backgroundColor = UIColor.white
         
@@ -176,16 +178,11 @@ class dropDownView: UIView,UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        customImageView.translatesAutoresizingMaskIntoConstraints = false
-        cell.backgroundColor = UIColor.white
-        cell.imageView?.image = dropDownOptions[indexPath.row].bankImage
-
-       cell.imageView?.addConstraint(NSLayoutConstraint(item: cell.contentView, attribute: .centerX, relatedBy: .equal, toItem: customImageView, attribute: .centerX, multiplier: 1.0, constant: 0))
-        cell.imageView?.addConstraint(NSLayoutConstraint(item: cell.contentView, attribute: .centerY, relatedBy: .equal, toItem: customImageView, attribute: .centerY, multiplier: 1.0, constant: 0))
-        
-        
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "customCell") as? CustomTableViewCell else {
+            fatalError("custom cell not found")
+        }
+        cell.customLogoImageView.image = dropDownOptions[indexPath.row].bankImage
+        cell.contentLabel.text = "this is a placeholder"
         return cell
     }
     
